@@ -23,10 +23,10 @@ describe('release notes builder', () => {
     expect(releaseNotes.split('\n')[0]?.length).toBeGreaterThan(20);
     expect(releaseNotes).toContain("## What's New");
     expect(releaseNotes).toMatch(/^### (Added|Changed|Fixed|Security)/m);
-    expect(releaseNotes).toContain('npm install -g attio-mcp');
-    expect(releaseNotes).toContain('npm update -g attio-mcp');
+    expect(releaseNotes).toContain('npm install -g @haggis-labs/attio-mcp');
+    expect(releaseNotes).toContain('npm update -g @haggis-labs/attio-mcp');
     expect(releaseNotes).toContain(
-      `**Full Changelog**: https://github.com/kesslerio/attio-mcp-server/compare/`
+      `**Full Changelog**: https://github.com/haggis-labs/attio-mcp-server/compare/`
     );
     expect(releaseNotes).toContain(`...v${version}`);
   });

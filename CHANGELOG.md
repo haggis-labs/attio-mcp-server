@@ -5,13 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0-haggis.1] - 2026-09-15
+
+**TL;DR for Users**: This fork adds configured custom-object note support and read-only meeting, call-recording, and transcript tools while retaining API-key authentication.
+
+This release is based on upstream `attio-mcp` 1.8.0.
+
+### Added
+
+- Read-only tools for listing and retrieving meetings and call recordings, and retrieving paginated call transcripts through Attio's documented APIs.
+- Support for configured custom object slugs, including `deal`, in the universal `create_note` and `list_notes` tools while keeping specialized deal tools bound to Attio's standard `deals` object.
+- Fork-specific npm package, command names, repository metadata, and installation instructions.
+
+### Fixed
+
+- Package imports now resolve to compiled files included in the npm tarball.
+
 ## [1.8.0] - 2026-09-08
 
 **TL;DR for Users**: Agents can now configure Attio list sharing (workspace and member-level access) directly through the list tools, and get error guidance that distinguishes plan limits from permission failures. (#1148)
 
 ### Added
-
-- **Read-only meeting and call transcript tools** — list or retrieve meetings and call recordings, then retrieve paginated transcript text through Attio's documented APIs
 
 - **`upsert_record` universal tool** — idempotent create-or-update by exact attribute match (email, domain, or any unique slug) with `dry_run`, `create_if_missing`, and ambiguous-match protection that reports candidate record ids without writing, preventing duplicate records in enrichment and sync workflows (#1191)
 - **List access controls are now first-class tool inputs** — `create-list` and `update-list-configuration` accept `workspace_access` and `workspace_member_access` directly, with client-side shape validation, the create-time full-access-grantee invariant, and a `plan_gating` error category that distinguishes Attio 403 `billing_error` (plan limit) from `insufficient_scopes` (permission) failures (#1148)
@@ -32,7 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **Configured custom objects now work with `create_note` and `list_notes`** — note schemas and runtime validation accept discovered custom object slugs such as `deal` while preserving the distinct standard `deals` resource
 - **Test-data cleanup script no longer 404s on lists and notes** — lists are fetched via `GET /v2/lists` and deleted via `DELETE /v2/lists/{id}` (list resources, not object records), and notes requests exit with an explanatory notice instead of hitting the nonexistent `notes` object slug (#620)
 
 ### Changed
@@ -1041,3 +1054,4 @@ Users upgrading from v0.1.x should note:
 [0.1.2]: https://github.com/kesslerio/attio-mcp-server/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/kesslerio/attio-mcp-server/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kesslerio/attio-mcp-server/releases/tag/v0.1.0
+[1.8.0-haggis.1]: https://github.com/haggis-labs/attio-mcp-server/compare/v1.8.0...v1.8.0-haggis.1

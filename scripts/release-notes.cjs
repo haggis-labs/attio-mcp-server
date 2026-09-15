@@ -7,13 +7,13 @@ const INSTALLATION_BLOCK = [
   '## Installation',
   '',
   '```bash',
-  'npm install -g attio-mcp',
+  'npm install -g @haggis-labs/attio-mcp',
   '```',
   '',
   'Or update your existing installation:',
   '',
   '```bash',
-  'npm update -g attio-mcp',
+  'npm update -g @haggis-labs/attio-mcp',
   '```',
 ];
 
@@ -86,7 +86,7 @@ function stripHeadingAndSummary(sectionContent) {
 function extractCompareUrl(changelogContent, version) {
   const normalizedVersion = normalizeVersion(version);
   const compareLinkPattern = new RegExp(
-    `^\\[${escapeRegExp(normalizedVersion)}\\]:\\s+(https://github\\.com/kesslerio/attio-mcp-server/(?:compare|releases/tag)/\\S+)$`,
+    `^\\[${escapeRegExp(normalizedVersion)}\\]:\\s+(https://github\\.com/haggis-labs/attio-mcp-server/(?:compare|releases/tag)/\\S+)$`,
     'm'
   );
   const match = changelogContent.match(compareLinkPattern);

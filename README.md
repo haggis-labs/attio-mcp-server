@@ -1,13 +1,11 @@
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/kesslerio-attio-mcp-server-badge.png)](https://mseep.ai/app/kesslerio-attio-mcp-server)
+# Attio MCP Server — Haggis Labs fork
 
-# Attio MCP Server
+This public fork is based on [`kesslerio/attio-mcp-server`](https://github.com/kesslerio/attio-mcp-server). It adds API-key-compatible custom-object note parity and read-only meeting, call-recording, and transcript tools while those changes are proposed upstream.
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![npm version](https://badge.fury.io/js/attio-mcp.svg)](https://badge.fury.io/js/attio-mcp)
+[![npm version](https://img.shields.io/npm/v/%40haggis-labs%2Fattio-mcp)](https://www.npmjs.com/package/@haggis-labs/attio-mcp)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
-[![GitHub Release](https://img.shields.io/github/v/release/kesslerio/attio-mcp-server)](https://github.com/kesslerio/attio-mcp-server/releases)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kesslerio/attio-mcp-server)
-[![npm provenance](https://img.shields.io/npm/attio-mcp/provenance)](https://www.npmjs.com/package/attio-mcp)
+[![GitHub Release](https://img.shields.io/github/v/release/haggis-labs/attio-mcp-server)](https://github.com/haggis-labs/attio-mcp-server/releases)
 
 A comprehensive Model Context Protocol (MCP) server for [Attio](https://attio.com/), providing **complete CRM surface coverage**. This server enables AI assistants like Claude and ChatGPT to interact directly with your entire Attio workspace through natural language—manage Deals, Tasks, Lists, People, Companies, Records, and Notes without falling back to raw API calls.
 
@@ -112,16 +110,16 @@ ChatGPT Pro/Plus users can access the Attio toolset through natural language usi
 
 Supercharge Claude's Attio knowledge with pre-built skills that prevent common errors and teach best practices.
 
-| Skill                      | Purpose                                        | Setup                                           |
-| -------------------------- | ---------------------------------------------- | ----------------------------------------------- |
-| **attio-mcp-usage**        | Error prevention + universal workflow patterns | Bundled - just use it                           |
-| **attio-workspace-schema** | YOUR workspace's exact field names and options | `npx attio-discover generate-skill --all --zip` |
-| **attio-skill-generator**  | Create custom workflow skills (advanced)       | Python + prompting                              |
+| Skill                      | Purpose                                        | Setup                                                  |
+| -------------------------- | ---------------------------------------------- | ------------------------------------------------------ |
+| **attio-mcp-usage**        | Error prevention + universal workflow patterns | Bundled - just use it                                  |
+| **attio-workspace-schema** | YOUR workspace's exact field names and options | `npx attio-discover-haggis generate-skill --all --zip` |
+| **attio-skill-generator**  | Create custom workflow skills (advanced)       | Python + prompting                                     |
 
 **Quick Start** (solves "wrong field name" errors):
 
 ```bash
-npx attio-discover generate-skill --all --zip
+npx attio-discover-haggis generate-skill --all --zip
 # Import ZIP into Claude Desktop: Settings > Skills > Install Skill
 ```
 
@@ -224,7 +222,7 @@ For complete prompt documentation, see [docs/prompts/v1-catalog.md](./docs/promp
 - **Large Datasets**: Automatic pagination and field filtering for optimal performance
 - **Rate Limiting**: Built-in protection against API rate limits with exponential backoff
 
-For detailed troubleshooting and solutions, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) and [GitHub Issues](https://github.com/kesslerio/attio-mcp-server/issues).
+For detailed troubleshooting and solutions, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) and [GitHub Issues](https://github.com/haggis-labs/attio-mcp-server/issues).
 
 ## 🎯 **Advanced Search Filters**
 
@@ -234,9 +232,8 @@ Build powerful CRM queries with multi-criteria AND/OR filtering. See the [Advanc
 
 > ⚠️ **IMPORTANT: Correct Package Name**
 >
-> The npm package name is **`attio-mcp`** (not `attio-mcp-server`).
-> The GitHub repository is named `attio-mcp-server`, but the npm package was renamed to `attio-mcp` in June 2025.
-> Installing `attio-mcp-server` will give you an outdated v0.0.2 release with only 4 legacy tools.
+> The npm package name is **`@haggis-labs/attio-mcp`**.
+> This fork uses its own scoped package and executable so it can coexist with upstream `attio-mcp`.
 
 ### Client Compatibility
 
@@ -250,43 +247,22 @@ Build powerful CRM queries with multi-criteria AND/OR filtering. See the [Advanc
 
 **Choose your installation method:**
 
-- **Most users**: Use [Tier 1 (Shell Installers)](#tier-1-shell-installers) - one command, automatic setup
+- **Most users**: Use [Tier 1 (npm package)](#tier-1-npm-package) - one command to install the fork-specific CLI
 - **Power users**: Use [Tier 2 (Manual)](#tier-2-manual-configuration) - full control over configuration
 - **ChatGPT/Teams/Enterprise**: Use [Tier 3 (Cloudflare Worker)](#tier-3-cloudflare-worker-remote-deployment) - self-hosted, multi-user OAuth
 
 ---
 
-### Tier 1: Shell Installers
+### Tier 1: npm package
 
-> **Best for**: Developers who prefer local installations with automatic configuration.
-
-One-command scripts that install `attio-mcp` and configure your client automatically.
-
-#### Claude Desktop
+> **Best for**: Developers who want a local installation that remains separate from the upstream CLI.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kesslerio/attio-mcp-server/main/scripts/install-claude-desktop.sh | bash
+npm install -g @haggis-labs/attio-mcp
+attio-mcp-haggis --help
 ```
 
-#### Cursor IDE
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kesslerio/attio-mcp-server/main/scripts/install-cursor.sh | bash
-```
-
-#### Claude Code (CLI)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kesslerio/attio-mcp-server/main/scripts/install-claude-code.sh | bash
-```
-
-These scripts will:
-
-- Install `attio-mcp` npm package globally (if needed)
-- Backup existing configuration files
-- Prompt for your Attio API key
-- Configure the MCP server for your client
-- Print next steps and restart instructions
+Continue with the client configuration examples below. The executable is named `attio-mcp-haggis`, so installing it does not replace upstream's `attio-mcp` executable.
 
 ---
 
@@ -297,10 +273,10 @@ These scripts will:
 <details>
 <summary><strong>Claude Desktop Manual Setup</strong></summary>
 
-#### Step 1: Install attio-mcp
+#### Step 1: Install the Haggis Labs package
 
 ```bash
-npm install -g attio-mcp
+npm install -g @haggis-labs/attio-mcp
 ```
 
 #### Step 2: Find your config file
@@ -314,8 +290,8 @@ npm install -g attio-mcp
 ```json
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "your_api_key_here"
       }
@@ -331,10 +307,10 @@ npm install -g attio-mcp
 <details>
 <summary><strong>Cursor IDE Manual Setup</strong></summary>
 
-#### Step 1: Install attio-mcp
+#### Step 1: Install the Haggis Labs package
 
 ```bash
-npm install -g attio-mcp
+npm install -g @haggis-labs/attio-mcp
 ```
 
 #### Step 2: Edit config file
@@ -344,8 +320,8 @@ Location: `~/.cursor/mcp.json`
 ```json
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "your_api_key_here"
       }
@@ -364,7 +340,7 @@ Location: `~/.cursor/mcp.json`
 #### Option A: Using Claude CLI command (recommended)
 
 ```bash
-echo '{"command":"attio-mcp","env":{"ATTIO_API_KEY":"your_key_here"}}' | claude mcp add-json attio-mcp --stdin -s user
+echo '{"command":"attio-mcp-haggis","env":{"ATTIO_API_KEY":"your_key_here"}}' | claude mcp add-json attio-mcp-haggis --stdin -s user
 ```
 
 #### Option B: Manual config edit
@@ -374,8 +350,8 @@ Edit `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "your_api_key_here"
       }
@@ -392,7 +368,7 @@ Edit `~/.claude/settings.json`:
 For development or custom deployments:
 
 ```bash
-git clone https://github.com/kesslerio/attio-mcp-server.git
+git clone https://github.com/haggis-labs/attio-mcp-server.git
 cd attio-mcp-server
 npm install
 npm run build
@@ -411,10 +387,10 @@ ATTIO_API_KEY=your_key node dist/index.js
 
 ```bash
 # Global installation for CLI usage
-npm install -g attio-mcp
+npm install -g @haggis-labs/attio-mcp
 
 # Or local installation for project integration
-npm install attio-mcp
+npm install @haggis-labs/attio-mcp
 ```
 
 </details>
@@ -589,10 +565,10 @@ export ATTIO_DEFAULT_CURRENCY="USD"                    # Default currency for de
 
 ```bash
 # Test the MCP server
-attio-mcp --help
+attio-mcp-haggis --help
 
 # Discover your Attio workspace attributes
-attio-discover attributes
+attio-discover-haggis attributes
 ```
 
 ### 3. 🎯 **CRITICAL: Configure Field Mappings**
@@ -685,8 +661,8 @@ Deal stages are specific to your workspace. Check your Attio workspace settings 
 ```json
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "your_api_key_here",
         "ATTIO_WORKSPACE_ID": "your_workspace_id_here",
@@ -741,24 +717,15 @@ Deal stages are specific to your workspace. Check your Attio workspace settings 
 - **No Data Storage**: Direct API passthrough with no local data retention
 - **Open Source**: Full transparency with Apache 2.0 license
 - **Optional On-Premises**: Deploy in your own infrastructure
-- **npm Provenance**: Published with [Sigstore provenance](https://docs.npmjs.com/generating-provenance-statements) — every release is cryptographically linked to the GitHub Actions build and source commit
 
-### Supply Chain Verification
+### Package verification
 
-This package is published with npm provenance, creating a verifiable chain from source code to published artifact. Verify a release:
+Inspect the published package metadata and contents before installation:
 
 ```sh
-# Check provenance attestation on any published version
-npm view attio-mcp --json | jq .attestations
-
-# With pnpm (v10+), enforce trust policy at install time
-# pnpm trustPolicy: no-downgrade blocks packages published with weaker credentials
+npm view @haggis-labs/attio-mcp --json
+npm pack @haggis-labs/attio-mcp --dry-run
 ```
-
-For maximum supply chain protection, install with [pnpm v10+](https://pnpm.io) which enforces:
-
-- **`trustPolicy: no-downgrade`** — blocks versions published with weaker credentials than prior versions
-- **`minimumReleaseAge`** — cooldown period before new versions can be installed
 
 ## 📚 Documentation
 
@@ -812,7 +779,7 @@ Comprehensive documentation is available in the [docs directory](./docs):
 ### **Setup Development Environment**
 
 ```bash
-git clone https://github.com/kesslerio/attio-mcp-server.git
+git clone https://github.com/haggis-labs/attio-mcp-server.git
 cd attio-mcp-server
 npm install
 npm run build
@@ -867,22 +834,22 @@ This initial release provides a solid foundation for CRM automation.
 
 ## 🔗 Links
 
-- **NPM Package**: https://www.npmjs.com/package/attio-mcp
-- **GitHub Repository**: https://github.com/kesslerio/attio-mcp-server
-- **Issues & Support**: https://github.com/kesslerio/attio-mcp-server/issues
-- **Releases**: https://github.com/kesslerio/attio-mcp-server/releases
+- **NPM Package**: https://www.npmjs.com/package/@haggis-labs/attio-mcp
+- **GitHub Repository**: https://github.com/haggis-labs/attio-mcp-server
+- **Issues & Support**: https://github.com/haggis-labs/attio-mcp-server/issues
+- **Releases**: https://github.com/haggis-labs/attio-mcp-server/releases
 - **Attio Documentation**: https://developers.attio.com/
 
 ## 📄 License
 
 This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
 
-**Original Work Attribution**: This project is based on initial work by @hmk under BSD-3-Clause license, with substantial modifications and enhancements by @kesslerio. The original BSD license notice is preserved in the LICENSE file as required.
+**Upstream attribution**: This fork is based on [`kesslerio/attio-mcp-server`](https://github.com/kesslerio/attio-mcp-server), which includes initial work by @hmk under the BSD-3-Clause license and substantial later work by @kesslerio. The original license notices are preserved in `LICENSE`.
 
 ---
 
 **Ready to transform your CRM workflow?** Install Attio MCP Server today and experience the future of CRM automation with AI!
 
 ```bash
-npm install -g attio-mcp
+npm install -g @haggis-labs/attio-mcp
 ```

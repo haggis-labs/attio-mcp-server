@@ -1,23 +1,22 @@
 {
-  "name": "attio-mcp",
-  "version": "1.8.0",
-  "description": "AI-powered access to Attio CRM. Manage contacts, companies, deals, tasks, and notes. Search records, update pipelines, and automate workflows for sales and GTM teams.",
-  "mcpName": "io.github.kesslerio/attio-mcp-server",
+  "name": "@haggis-labs/attio-mcp",
+  "version": "1.8.0-haggis.1",
+  "description": "Attio MCP server with API-key support, custom-object parity, and read-only meeting transcript tools.",
+  "mcpName": "io.github.haggis-labs/attio-mcp-server",
   "main": "dist/smithery.js",
-  "module": "src/smithery.ts",
+  "module": "dist/smithery.js",
   "type": "module",
-  "access": "public",
   "workspaces": [
     "packages/*"
   ],
   "bin": {
-    "attio-mcp": "dist/cli.js",
-    "attio-discover": "dist/cli/discover.js"
+    "attio-mcp-haggis": "dist/cli.js",
+    "attio-discover-haggis": "dist/cli/discover.js"
   },
   "exports": {
     ".": {
-      "import": "./src/smithery.ts",
-      "require": "./dist/smithery.js"
+      "import": "./dist/smithery.js",
+      "default": "./dist/smithery.js"
     },
     "./cli": "./dist/cli.js",
     "./lib": "./dist/index.js"
@@ -106,7 +105,7 @@
     "discover:robust": "./scripts/run-discover.sh",
     "discover:attributes:robust": "./scripts/run-discover.sh attributes",
     "discover:all-attributes:robust": "./scripts/run-discover.sh attributes --all",
-    "skill:generate": "attio-discover generate-skill --all",
+    "skill:generate": "attio-discover-haggis generate-skill --all",
     "debug:list-members": "node --import tsx scripts/debug/list-workspace-members.ts",
     "debug:create-test-list": "node --import tsx scripts/debug/create-test-list.ts",
     "debug:cleanup-test-list": "node --import tsx scripts/debug/cleanup-test-list.ts",
@@ -192,12 +191,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kesslerio/attio-mcp-server.git"
+    "url": "https://github.com/haggis-labs/attio-mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/kesslerio/attio-mcp-server/issues"
+    "url": "https://github.com/haggis-labs/attio-mcp-server/issues"
   },
-  "homepage": "https://github.com/kesslerio/attio-mcp-server#readme",
+  "homepage": "https://github.com/haggis-labs/attio-mcp-server#readme",
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.15",
     "@leeoniya/ufuzzy": "^1.0.14",
@@ -208,6 +207,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "fast-safe-stringify": "^2.1.1",
+    "fflate": "^0.8.2",
     "handlebars": "^4.7.8",
     "libphonenumber-js": "^1.12.30",
     "lru-cache": "^11.2.2",
@@ -222,7 +222,7 @@
     "node": ">=20.0.0",
     "bun": ">=1.1.0"
   },
-  "author": "@kesslerio",
+  "author": "Haggis Labs",
   "license": "Apache-2.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -326,5 +326,8 @@
         "typecheck"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

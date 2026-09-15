@@ -20,9 +20,10 @@ describe('Version Consistency Validation', () => {
     const serverJsonPath = resolve(projectRoot, 'server.json');
     const serverJson = JSON.parse(readFileSync(serverJsonPath, 'utf-8'));
     const serverVersion = serverJson.version;
-    const npmPackageVersion = serverJson.packages?.find(
-      (pkg: { identifier?: string }) => pkg.identifier === 'attio-mcp'
-    )?.version;
+    const npmPackage = serverJson.packages?.find(
+      (pkg: { identifier?: string }) => pkg.identifier === packageJson.name
+    );
+    const npmPackageVersion = npmPackage?.version;
 
     // Read CHANGELOG.md content
     const changelogPath = resolve(projectRoot, 'CHANGELOG.md');
@@ -43,6 +44,8 @@ describe('Version Consistency Validation', () => {
       packageVersion,
       `server.json version (${serverVersion}) should match package.json version (${packageVersion})`
     );
+
+    expect(npmPackage?.identifier).toBe(packageJson.name);
 
     expect(npmPackageVersion).toBe(
       packageVersion,
@@ -109,5 +112,23 @@ describe('Version Consistency Validation', () => {
     expect(packageJson.main || packageJson.exports).toBeTruthy(
       'Package must have main entry point'
     );
+  });
+
+  it('should publish the fork under an isolated package and executable name', () => {
+    const packageJsonPath = resolve(projectRoot, 'package.json');
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+
+    expect(packageJson.name).toBe('@haggis-labs/attio-mcp');
+    expect(packageJson.publishConfig).toEqual({ access: 'public' });
+    expect(packageJson.bin).toEqual({
+      'attio-mcp-haggis': 'dist/cli.js',
+      'attio-discover-haggis': 'dist/cli/discover.js',
+    });
+    expect(packageJson.module).toBe('dist/smithery.js');
+    expect(packageJson.exports['.']).toEqual({
+      import: './dist/smithery.js',
+      default: './dist/smithery.js',
+    });
+    expect(packageJson.dependencies.fflate).toBeTruthy();
   });
 });

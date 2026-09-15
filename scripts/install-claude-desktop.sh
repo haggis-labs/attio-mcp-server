@@ -2,7 +2,7 @@
 set -e
 
 # Attio MCP Server - Claude Desktop Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/kesslerio/attio-mcp-server/main/scripts/install-claude-desktop.sh | bash
+# Usage: curl -fsSL https://github.com/haggis-labs/attio-mcp-server/raw/refs/heads/feature/issue-3-publish-scoped-package/scripts/install-claude-desktop.sh | bash
 
 echo "======================================="
 echo "  Attio MCP Server - Claude Desktop"
@@ -83,26 +83,26 @@ check_prerequisites() {
     log_success "Claude Desktop config directory: $config_dir"
 }
 
-# Install attio-mcp npm package
+# Install attio-mcp-haggis npm package
 install_attio_mcp() {
-    log_info "Checking if attio-mcp is installed..."
+    log_info "Checking if attio-mcp-haggis is installed..."
 
-    if npm list -g attio-mcp >/dev/null 2>&1; then
-        log_success "attio-mcp is already installed globally"
+    if npm list -g @haggis-labs/attio-mcp >/dev/null 2>&1; then
+        log_success "attio-mcp-haggis is already installed globally"
     else
-        log_info "Installing attio-mcp globally..."
-        npm install -g attio-mcp
+        log_info "Installing attio-mcp-haggis globally..."
+        npm install -g @haggis-labs/attio-mcp
         if [ $? -eq 0 ]; then
-            log_success "attio-mcp installed successfully"
+            log_success "attio-mcp-haggis installed successfully"
         else
-            log_error "Failed to install attio-mcp. Try: sudo npm install -g attio-mcp"
+            log_error "Failed to install attio-mcp-haggis. Try: sudo npm install -g @haggis-labs/attio-mcp"
             exit 1
         fi
     fi
 
     # Verify installation
-    if ! command_exists attio-mcp; then
-        log_warning "attio-mcp command not found in PATH"
+    if ! command_exists attio-mcp-haggis; then
+        log_warning "attio-mcp-haggis command not found in PATH"
         log_info "You may need to add npm global bin to your PATH"
     fi
 }
@@ -166,10 +166,10 @@ configure_claude_desktop() {
     # Backup existing config
     backup_config "$config_file"
 
-    # Prepare the attio-mcp server entry
+    # Prepare the attio-mcp-haggis server entry
     local attio_server_json=$(cat <<EOF
 {
-    "command": "attio-mcp",
+    "command": "attio-mcp-haggis",
     "env": {
         "ATTIO_API_KEY": "$ATTIO_API_KEY"
     }
@@ -179,7 +179,7 @@ EOF
 
     if [ -f "$config_file" ]; then
         # Config exists - need to merge
-        log_info "Existing config found. Merging attio-mcp server..."
+        log_info "Existing config found. Merging attio-mcp-haggis server..."
 
         # Check if jq is available for proper JSON merging
         if command_exists jq; then
@@ -188,11 +188,11 @@ EOF
 
             # Check if mcpServers exists
             if jq -e '.mcpServers' "$config_file" >/dev/null 2>&1; then
-                # mcpServers exists, add/update attio-mcp entry
-                jq --argjson attio "$attio_server_json" '.mcpServers["attio-mcp"] = $attio' "$config_file" > "$temp_file"
+                # mcpServers exists, add/update attio-mcp-haggis entry
+                jq --argjson attio "$attio_server_json" '.mcpServers["attio-mcp-haggis"] = $attio' "$config_file" > "$temp_file"
             else
                 # mcpServers doesn't exist, create it
-                jq --argjson attio "$attio_server_json" '. + {"mcpServers": {"attio-mcp": $attio}}' "$config_file" > "$temp_file"
+                jq --argjson attio "$attio_server_json" '. + {"mcpServers": {"attio-mcp-haggis": $attio}}' "$config_file" > "$temp_file"
             fi
 
             mv "$temp_file" "$config_file"
@@ -205,8 +205,8 @@ EOF
             cat > "$config_file" << EOF
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "$ATTIO_API_KEY"
       }
@@ -222,8 +222,8 @@ EOF
         cat > "$config_file" << EOF
 {
   "mcpServers": {
-    "attio-mcp": {
-      "command": "attio-mcp",
+    "attio-mcp-haggis": {
+      "command": "attio-mcp-haggis",
       "env": {
         "ATTIO_API_KEY": "$ATTIO_API_KEY"
       }
@@ -260,7 +260,7 @@ show_next_steps() {
     echo "3. Start using Attio tools in Claude Desktop!"
     echo "   Try: \"Search for companies in my Attio workspace\""
     echo ""
-    echo "Documentation: https://github.com/kesslerio/attio-mcp-server"
+    echo "Documentation: https://github.com/haggis-labs/attio-mcp-server"
     echo ""
 }
 

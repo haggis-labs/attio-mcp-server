@@ -2,7 +2,7 @@
 set -e
 
 # Attio MCP Server - Claude Code (CLI) Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/kesslerio/attio-mcp-server/main/scripts/install-claude-code.sh | bash
+# Usage: curl -fsSL https://github.com/haggis-labs/attio-mcp-server/raw/refs/heads/feature/issue-3-publish-scoped-package/scripts/install-claude-code.sh | bash
 
 echo "======================================="
 echo "  Attio MCP Server - Claude Code"
@@ -69,26 +69,26 @@ check_prerequisites() {
     log_success "Claude CLI found"
 }
 
-# Install attio-mcp npm package
+# Install attio-mcp-haggis npm package
 install_attio_mcp() {
-    log_info "Checking if attio-mcp is installed..."
+    log_info "Checking if attio-mcp-haggis is installed..."
 
-    if npm list -g attio-mcp >/dev/null 2>&1; then
-        log_success "attio-mcp is already installed globally"
+    if npm list -g @haggis-labs/attio-mcp >/dev/null 2>&1; then
+        log_success "attio-mcp-haggis is already installed globally"
     else
-        log_info "Installing attio-mcp globally..."
-        npm install -g attio-mcp
+        log_info "Installing attio-mcp-haggis globally..."
+        npm install -g @haggis-labs/attio-mcp
         if [ $? -eq 0 ]; then
-            log_success "attio-mcp installed successfully"
+            log_success "attio-mcp-haggis installed successfully"
         else
-            log_error "Failed to install attio-mcp. Try: sudo npm install -g attio-mcp"
+            log_error "Failed to install attio-mcp-haggis. Try: sudo npm install -g @haggis-labs/attio-mcp"
             exit 1
         fi
     fi
 
     # Verify installation
-    if ! command_exists attio-mcp; then
-        log_warning "attio-mcp command not found in PATH"
+    if ! command_exists attio-mcp-haggis; then
+        log_warning "attio-mcp-haggis command not found in PATH"
         log_info "You may need to add npm global bin to your PATH"
     fi
 }
@@ -138,7 +138,7 @@ configure_claude_code() {
     # Create the MCP server configuration JSON
     local config_json=$(cat <<EOF
 {
-    "command": "attio-mcp",
+    "command": "attio-mcp-haggis",
     "env": {
         "ATTIO_API_KEY": "$ATTIO_API_KEY"
     }
@@ -146,22 +146,22 @@ configure_claude_code() {
 EOF
 )
 
-    # Check if attio-mcp is already configured
-    if claude mcp list 2>/dev/null | grep -q "attio-mcp"; then
-        log_info "attio-mcp already configured. Updating..."
+    # Check if attio-mcp-haggis is already configured
+    if claude mcp list 2>/dev/null | grep -q "attio-mcp-haggis"; then
+        log_info "attio-mcp-haggis already configured. Updating..."
         # Remove existing config first
-        claude mcp remove attio-mcp -s user 2>/dev/null || true
+        claude mcp remove attio-mcp-haggis -s user 2>/dev/null || true
     fi
 
     # Add the MCP server configuration
-    log_info "Adding attio-mcp to Claude Code..."
-    echo "$config_json" | claude mcp add-json attio-mcp --stdin -s user
+    log_info "Adding attio-mcp-haggis to Claude Code..."
+    echo "$config_json" | claude mcp add-json attio-mcp-haggis --stdin -s user
 
     if [ $? -eq 0 ]; then
         log_success "Claude Code configured successfully"
     else
         log_error "Failed to configure Claude Code"
-        log_info "Try manually: claude mcp add attio-mcp --command attio-mcp"
+        log_info "Try manually: claude mcp add attio-mcp-haggis --command attio-mcp-haggis"
         exit 1
     fi
 
@@ -188,7 +188,7 @@ show_next_steps() {
         echo "   Get your API key from: https://app.attio.com/settings/api"
         echo ""
         echo "2. Or update the MCP server config:"
-        echo "   claude mcp remove attio-mcp -s user"
+        echo "   claude mcp remove attio-mcp-haggis -s user"
         echo "   Then run this script again with ATTIO_API_KEY set"
         echo ""
     fi
@@ -196,7 +196,7 @@ show_next_steps() {
     echo "Start using Attio tools in Claude Code!"
     echo "  Try: claude \"Search for companies in my Attio workspace\""
     echo ""
-    echo "Documentation: https://github.com/kesslerio/attio-mcp-server"
+    echo "Documentation: https://github.com/haggis-labs/attio-mcp-server"
     echo ""
 }
 

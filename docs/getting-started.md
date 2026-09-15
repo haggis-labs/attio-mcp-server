@@ -15,13 +15,13 @@ Before you begin, ensure you have the following:
 
 ### Option 1: Install from npm (Recommended for Users)
 
-> ⚠️ **Note**: The npm package name is `attio-mcp` (not `attio-mcp-server`)
+> ⚠️ **Note**: This fork is published as `@haggis-labs/attio-mcp`
 
 ```bash
-npm install -g attio-mcp
+npm install -g @haggis-labs/attio-mcp
 ```
 
-This makes the `attio-mcp` command available globally.
+This makes the `attio-mcp-haggis` command available globally.
 
 ### Option 2: Clone Repository (Recommended for Development)
 
@@ -29,7 +29,7 @@ This makes the `attio-mcp` command available globally.
 # Fork the repository on GitHub first
 
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/attio-mcp-server.git
+git clone https://github.com/haggis-labs/attio-mcp-server.git
 cd attio-mcp-server
 
 # Add upstream remote
@@ -76,7 +76,7 @@ Or pass them as environment variables when running the server.
 ### Option 1: Using npx (if installed globally)
 
 ```bash
-attio-mcp
+attio-mcp-haggis
 ```
 
 ### Option 2: From cloned repository
@@ -143,7 +143,12 @@ To use the Attio MCP Server with Claude Desktop, add the following to your Claud
   "mcpServers": {
     "attio": {
       "command": "npx",
-      "args": ["attio-mcp"],
+      "args": [
+        "--yes",
+        "--package",
+        "@haggis-labs/attio-mcp",
+        "attio-mcp-haggis"
+      ],
       "env": {
         "ATTIO_API_KEY": "YOUR_ATTIO_API_KEY"
       }
@@ -224,5 +229,5 @@ If discovery fails, it won't prevent the server from starting. You can:
 If you encounter any issues, please:
 
 1. Check the [Troubleshooting Guide](../TROUBLESHOOTING.md)
-2. Look for similar issues on our [GitHub Issues](https://github.com/kesslerio/attio-mcp-server/issues) page
+2. Look for similar issues on our [GitHub Issues](https://github.com/haggis-labs/attio-mcp-server/issues) page
 3. Create a new issue if your problem isn't addressed
