@@ -44,6 +44,17 @@ const { extractNoteFields } =
   await import('@/handlers/tool-configs/universal/core/utils/note-formatters.js');
 const { validateUniversalToolParams } =
   await import('@/handlers/tool-configs/universal/schemas.js');
+const { createNoteSchema, listNotesSchema } =
+  await import('@/handlers/tool-configs/universal/schemas/utility-schemas.js');
+
+describe('note tool schemas', () => {
+  it('does not advertise a standard-only enum for resource_type', () => {
+    expect(createNoteSchema.properties.resource_type).not.toHaveProperty(
+      'enum'
+    );
+    expect(listNotesSchema.properties.resource_type).not.toHaveProperty('enum');
+  });
+});
 
 describe('extractNoteFields', () => {
   beforeEach(() => {
@@ -175,6 +186,25 @@ describe('createNoteConfig.handler', () => {
     await expect(createNoteConfig.handler({})).resolves.toEqual(upstreamResult);
     expect(mockHandleUniversalCreateNote).toHaveBeenCalledWith(sanitizedParams);
   });
+
+  it('passes the configured custom object slug deal through unchanged', async () => {
+    const sanitizedParams: UniversalCreateNoteParams = {
+      resource_type: 'deal',
+      record_id: '123e4567-e89b-12d3-a456-426614174000',
+      title: 'Custom object note',
+      content: 'Body',
+    };
+
+    vi.mocked(validateUniversalToolParams).mockReturnValueOnce(sanitizedParams);
+    mockIsValidUUID.mockReturnValue(true);
+    mockHandleUniversalCreateNote.mockResolvedValueOnce({
+      id: { record_id: 'note-3' },
+    });
+
+    await createNoteConfig.handler({});
+
+    expect(mockHandleUniversalCreateNote).toHaveBeenCalledWith(sanitizedParams);
+  });
 });
 
 describe('listNotesConfig.handler', () => {
@@ -211,6 +241,21 @@ describe('listNotesConfig.handler', () => {
     mockHandleUniversalGetNotes.mockResolvedValueOnce(upstreamNotes);
 
     await expect(listNotesConfig.handler({})).resolves.toEqual(upstreamNotes);
+  });
+
+  it('passes the configured custom object slug deal through unchanged', async () => {
+    const sanitizedParams: UniversalGetNotesParams = {
+      resource_type: 'deal',
+      record_id: '123e4567-e89b-12d3-a456-426614174000',
+    };
+
+    vi.mocked(validateUniversalToolParams).mockReturnValueOnce(sanitizedParams);
+    mockIsValidUUID.mockReturnValue(true);
+    mockHandleUniversalGetNotes.mockResolvedValueOnce([]);
+
+    await listNotesConfig.handler({});
+
+    expect(mockHandleUniversalGetNotes).toHaveBeenCalledWith(sanitizedParams);
   });
 });
 

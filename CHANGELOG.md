@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Configured custom objects now work with `create_note` and `list_notes`** — note schemas and runtime validation accept discovered custom object slugs such as `deal` while preserving the distinct standard `deals` resource
 - **Test-data cleanup script no longer 404s on lists and notes** — lists are fetched via `GET /v2/lists` and deleted via `DELETE /v2/lists/{id}` (list resources, not object records), and notes requests exit with an explanatory notice instead of hitting the nonexistent `notes` object slug (#620)
 
 ### Changed

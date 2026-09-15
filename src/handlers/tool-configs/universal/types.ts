@@ -37,7 +37,8 @@ export enum DetailedInfoType {
  * Universal note creation parameters
  */
 export interface UniversalCreateNoteParams {
-  resource_type: UniversalResourceType;
+  /** Standard resource type or a configured custom object slug. */
+  resource_type: string;
   record_id: string;
   title: string;
   content: string;
@@ -49,7 +50,8 @@ export interface UniversalCreateNoteParams {
  * Universal get notes parameters
  */
 export interface UniversalGetNotesParams {
-  resource_type?: UniversalResourceType;
+  /** Standard resource type or a configured custom object slug. */
+  resource_type?: string;
   record_id?: string;
   limit?: number;
   offset?: number;

@@ -120,7 +120,7 @@ describe('scoped CRUD universal tools', () => {
     );
 
     const result = await createDealConfig.handler({
-      resource_type: UniversalResourceType.COMPANIES,
+      resource_type: 'deal',
       record_data: { name: 'Expansion', stage: 'Demo' },
       return_details: true,
     } as UniversalCreateParams);
@@ -179,7 +179,7 @@ describe('scoped CRUD universal tools', () => {
     });
 
     const result = await updateDealConfig.handler({
-      resource_type: UniversalResourceType.COMPANIES,
+      resource_type: 'deal',
       record_id: 'deal-1',
       record_data: { stage: 'Demo' },
       return_details: false,

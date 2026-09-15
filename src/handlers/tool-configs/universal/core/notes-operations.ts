@@ -168,7 +168,7 @@ export const createNoteDefinition = {
   name: 'create_note',
   description: formatToolDescription({
     capability:
-      'Create note for companies, people, or deals with full markdown support.',
+      'Create a note for a standard record or configured custom object record with full markdown support.',
     boundaries: 'update or delete notes; creates only.',
     requiresApproval: true,
     constraints:
@@ -185,7 +185,8 @@ export const createNoteDefinition = {
 export const listNotesDefinition = {
   name: 'list_notes',
   description: formatToolDescription({
-    capability: 'Retrieve notes for a record with timestamps.',
+    capability:
+      'Retrieve notes for a standard record or configured custom object record with timestamps.',
     boundaries: 'create or modify notes; read-only.',
     constraints: 'Requires resource_type, record_id; sorted by creation date.',
     recoveryHint: 'If empty, verify record has notes with get_record_details.',

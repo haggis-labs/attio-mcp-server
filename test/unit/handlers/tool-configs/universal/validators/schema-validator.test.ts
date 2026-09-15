@@ -423,6 +423,109 @@ describe('validateUniversalToolParams', () => {
       ).toBe('funds');
     });
 
+    it('accepts configured custom object slug deal across record and note tools', () => {
+      vi.mocked(loadMappingConfig).mockReturnValue({
+        version: '1.0',
+        mappings: {
+          attributes: {
+            common: {},
+            objects: {
+              deal: { name: 'Name' },
+            },
+            custom: {},
+          },
+          objects: {},
+          lists: {},
+          relationships: {},
+        },
+      });
+
+      const recordId = '550e8400-e29b-41d4-a716-446655440000';
+      const cases = [
+        {
+          toolName: 'search_records',
+          params: { resource_type: 'deal', query: 'Example' },
+        },
+        {
+          toolName: 'get_record_details',
+          params: { resource_type: 'deal', record_id: recordId },
+        },
+        {
+          toolName: 'create_record',
+          params: { resource_type: 'deal', record_data: { name: 'Example' } },
+        },
+        {
+          toolName: 'update_record',
+          params: {
+            resource_type: 'deal',
+            record_id: recordId,
+            record_data: { name: 'Example' },
+          },
+        },
+        {
+          toolName: 'delete_record',
+          params: { resource_type: 'deal', record_id: recordId },
+        },
+        {
+          toolName: 'create_note',
+          params: {
+            resource_type: 'deal',
+            record_id: recordId,
+            title: 'Example',
+            content: 'Example note',
+          },
+        },
+        {
+          toolName: 'list_notes',
+          params: { resource_type: 'deal', record_id: recordId },
+        },
+      ];
+
+      for (const { toolName, params } of cases) {
+        expect(
+          validateUniversalToolParams(toolName, params).resource_type
+        ).toBe('deal');
+      }
+    });
+
+    it('keeps the standard deals resource distinct from configured deal', () => {
+      vi.mocked(loadMappingConfig).mockReturnValue({
+        version: '1.0',
+        mappings: {
+          attributes: {
+            common: {},
+            objects: { deal: { name: 'Name' } },
+            custom: {},
+          },
+          objects: {},
+          lists: {},
+          relationships: {},
+        },
+      });
+
+      expect(
+        validateUniversalToolParams('create_note', {
+          resource_type: 'deals',
+          record_id: '550e8400-e29b-41d4-a716-446655440000',
+          title: 'Example',
+          content: 'Example note',
+        }).resource_type
+      ).toBe('deals');
+    });
+
+    it('rejects unconfigured custom object slugs for note tools', () => {
+      for (const toolName of ['create_note', 'list_notes']) {
+        expect(() =>
+          validateUniversalToolParams(toolName, {
+            resource_type: 'deal',
+            record_id: '550e8400-e29b-41d4-a716-446655440000',
+            title: 'Example',
+            content: 'Example note',
+          })
+        ).toThrow("Invalid resource_type: 'deal'");
+      }
+    });
+
     it('rejects unknown custom objects for detail and CRUD tools with discovered options', () => {
       vi.mocked(loadMappingConfig).mockReturnValue({
         version: '1.0',

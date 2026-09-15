@@ -7,11 +7,7 @@ import {
 export const createNoteSchema = {
   type: 'object' as const,
   properties: {
-    resource_type: {
-      type: 'string' as const,
-      enum: Object.values(UniversalResourceType),
-      description: 'Target resource type',
-    },
+    resource_type: resourceTypeProperty,
     record_id: {
       type: 'string' as const,
       description: 'ID of the record to attach the note to',

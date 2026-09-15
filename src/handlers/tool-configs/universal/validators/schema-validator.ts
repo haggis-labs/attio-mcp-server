@@ -600,7 +600,7 @@ const toolValidators: Record<string, ToolValidator> = {
   },
 };
 
-const TOOLS_WITH_DYNAMIC_RESOURCE_TYPES = new Set([
+const TOOLS_WITH_CONFIGURED_RESOURCE_TYPES = new Set([
   'search_records',
   'search_records_advanced',
   'search_records_by_timeframe',
@@ -611,6 +611,8 @@ const TOOLS_WITH_DYNAMIC_RESOURCE_TYPES = new Set([
   'upsert_record',
   'delete_record',
   'merge_records',
+  'create_note',
+  'list_notes',
 ]);
 
 function validateStandardResourceType(resourceType: string): string {
@@ -636,7 +638,7 @@ function validateStandardResourceType(resourceType: string): string {
   return resourceType;
 }
 
-function validateDynamicSearchResourceType(resourceType: string): string {
+function validateConfiguredResourceType(resourceType: string): string {
   try {
     return canonicalizeResourceType(resourceType);
   } catch {
@@ -681,10 +683,10 @@ export function validateUniversalToolParams(
   validateIdFields(sanitizedParams);
   if (sanitizedParams.resource_type) {
     const resourceType = String(sanitizedParams.resource_type);
-    sanitizedParams.resource_type = TOOLS_WITH_DYNAMIC_RESOURCE_TYPES.has(
+    sanitizedParams.resource_type = TOOLS_WITH_CONFIGURED_RESOURCE_TYPES.has(
       toolName
     )
-      ? validateDynamicSearchResourceType(resourceType)
+      ? validateConfiguredResourceType(resourceType)
       : validateStandardResourceType(resourceType);
   }
   const validator = toolValidators[toolName];
