@@ -54,6 +54,10 @@ import {
   mergeRecordsConfig,
   mergeRecordsDefinition,
 } from './merge-operations.js';
+import {
+  meetingToolConfigs,
+  meetingToolDefinitions,
+} from './meeting-operations.js';
 
 export const coreOperationsToolConfigs = {
   create_note: createNoteConfig,
@@ -74,6 +78,7 @@ export const coreOperationsToolConfigs = {
   get_record_info: getDetailedInfoConfig,
   get_record_interactions: getRecordInteractionsConfig,
   merge_records: mergeRecordsConfig,
+  ...meetingToolConfigs,
 };
 
 export const coreOperationsToolDefinitions = {
@@ -95,6 +100,7 @@ export const coreOperationsToolDefinitions = {
   list_notes: listNotesDefinition,
   get_record_interactions: getRecordInteractionsDefinition,
   merge_records: mergeRecordsDefinition,
+  ...meetingToolDefinitions,
 };
 
 export {
@@ -122,4 +128,6 @@ export {
   getRecordInteractionsConfig,
   mergeRecordsConfig,
   mergeRecordsDefinition,
+  meetingToolConfigs,
+  meetingToolDefinitions,
 };

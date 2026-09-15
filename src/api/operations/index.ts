@@ -67,6 +67,22 @@ export {
   getWorkspaceMember,
 } from './workspace-members.js';
 
+export {
+  listMeetings,
+  getMeeting,
+  listCallRecordings,
+  getCallRecording,
+  getCallTranscript,
+} from './meetings.js';
+export type {
+  AttioMeeting,
+  AttioCallRecording,
+  AttioCallTranscript,
+  AttioTranscriptSegment,
+  AttioCursorPage,
+  ListMeetingsParams,
+} from './meetings.js';
+
 // Re-export all batch operations
 export {
   batchCreateRecords,

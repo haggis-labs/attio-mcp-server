@@ -163,6 +163,11 @@ export const coreUniversalTools = [
   'get_record_info',
   'get_record_interactions',
   'merge_records',
+  'list_meetings',
+  'get_meeting',
+  'list_call_recordings',
+  'get_call_recording',
+  'get_call_transcript',
 ];
 
 /**
